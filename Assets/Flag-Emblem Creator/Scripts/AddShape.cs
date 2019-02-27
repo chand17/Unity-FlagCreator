@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace FlagCreator
 {
@@ -8,6 +9,7 @@ namespace FlagCreator
     {
         public ShapeSelector shapeSelector;
         public ShapeCanvas canvas;
+        public GameObject ShapeTemplate;
 
         public void AddNewShape()
         {
@@ -19,13 +21,12 @@ namespace FlagCreator
 
         private ShapeController createShapeController(Sprite shapeSprite)
         {
-            GameObject newShape = new GameObject(shapeSprite.name);
-            newShape.transform.parent = canvas.transform;
-            newShape.transform.position = canvas.transform.position;
-
-            SpriteRenderer SpriteRend = newShape.AddComponent<SpriteRenderer>();
-            SpriteRend.sprite = shapeSprite;
-            SpriteRend.sortingOrder = 1;
+            GameObject newShape = GameObject.Instantiate(ShapeTemplate, ShapeTemplate.transform.position, canvas.transform.rotation);
+            newShape.transform.SetParent(canvas.transform, false);
+            newShape.SetActive(true);
+            
+            Image image = newShape.GetComponent<Image>();
+            image.sprite = shapeSprite;
 
             ShapeController controller = newShape.AddComponent<ShapeController>();
             canvas.AddShape(controller);

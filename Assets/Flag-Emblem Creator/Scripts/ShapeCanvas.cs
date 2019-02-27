@@ -20,23 +20,23 @@ namespace FlagCreator
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 //Cycle Shapes
                 if (shapes != null)
                 {
-                    shapes[selectedShape].selected = false;
+                    int selectShape = selectedShape;
 
-                    if (selectedShape + 1 < shapes.Count)
+                    if (selectShape + 1 < shapes.Count)
                     {
-                        selectedShape++;
+                        selectShape++;
                     }
                     else
                     {
-                        selectedShape = 0;
+                        selectShape = 0;
                     }
 
-                    shapes[selectedShape].selected = true;
+                    ChangeSelectedShape(selectShape);
                 }
             }
         }
@@ -45,8 +45,19 @@ namespace FlagCreator
         {
             shapes.Add(shape);
 
-            //TEMP
-            if (shapes.Count == 1) shapes[0].selected = true;   
+            ChangeSelectedShape(shapes.Count - 1);
+        }
+
+        public void ChangeSelectedShape(int selectShape)
+        {
+            shapes[selectedShape].Selected(false);
+            shapes[selectShape].Selected(true);
+            selectedShape = selectShape;
+        }
+
+        public void DeselectAll()
+        {
+            shapes[selectedShape].Selected(false);
         }
     }
 }
